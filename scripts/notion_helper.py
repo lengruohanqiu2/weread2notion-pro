@@ -155,6 +155,35 @@ class NotionHelper:
         if len(update_properties) > 0:
             self.client.databases.update(database_id=id, properties=update_properties)
 
+    def create_database(self):
+        title = [
+            {
+                "type": "text",
+                "text": {
+                    "content": self.database_name_dict.get("READ_DATABASE_NAME"),
+                },
+            },
+        ]
+        properties = {
+            "标题": {"title": {}},
+            "时长": {"number": {}},
+            "时间戳": {"number": {}},
+            "日期": {"date": {}},
+            "书架": {
+                "relation": {
+                    "database_id": self.book_database_id,
+                    "single_property": {},
+                }
+            },
+        }
+        parent = parent = {"page_id": self.page_id, "type": "page_id"}
+        self.read_database_id = self.client.databases.create(
+            parent=parent,
+            title=title,
+            icon=get_icon("https://www.notion.so/icons/target_gray.svg"),
+            properties=properties,
+        ).get("id")
+    
     def update_heatmap(self, block_id, url):
         # 更新 image block 的链接
         return self.client.blocks.update(block_id=block_id, embed={"url": url})
