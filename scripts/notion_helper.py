@@ -293,14 +293,16 @@ class NotionHelper:
         return self.client.pages.update(page_id=page_id, properties=properties)
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
-    def update_page(self, page_id, properties, icon):
+    def update_page(self, page_id, properties, cover):
         return self.client.pages.update(
-            page_id=page_id, icon=icon, properties=properties
+            page_id=page_id, properties=properties, cover=cover
         )
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
-    def create_page(self, parent, properties, icon):
-        return self.client.pages.create(parent=parent, properties=properties, icon=icon)
+    def create_book_page(self, parent, properties, icon):
+        return self.client.pages.create(
+            parent=parent, properties=properties, icon=icon, cover=icon
+        )
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
     def query(self, **kwargs):
@@ -339,7 +341,8 @@ class NotionHelper:
                 "category": get_property_value(result.get("properties").get("书架分类")),
                 "Sort": get_property_value(result.get("properties").get("排序标记")),
                 "douban_url": get_property_value(result.get("properties").get("豆瓣链接")),
-                "cover": get_property_value(result.get("properties").get("图书封面")),
+                # "cover": get_property_value(result.get("properties").get("图书封面")),
+                "cover": result.get("cover"),
                 "myRating": get_property_value(result.get("properties").get("个人评级")),
                 "comment": get_property_value(result.get("properties").get("豆瓣短评")),
                 "status": get_property_value(result.get("properties").get("阅读状态")),
