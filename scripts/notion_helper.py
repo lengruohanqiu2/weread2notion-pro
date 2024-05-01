@@ -82,7 +82,12 @@ class NotionHelper:
         self.chapter_database_id = self.database_id_dict.get(
             self.database_name_dict.get("CHAPTER_DATABASE_NAME")
         )
+        self.read_database_id = self.database_id_dict.get(
+            self.database_name_dict.get("READ_DATABASE_NAME")
+        )
         self.update_book_database()
+        if self.read_database_id is None:
+            self.create_database()
 
     def extract_page_id(self, notion_url):
         # 正则表达式匹配 32 个字符的 Notion page_id
