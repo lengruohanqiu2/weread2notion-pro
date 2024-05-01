@@ -192,10 +192,10 @@ def format_time(time):
     result = ""
     hour = time // 3600
     if hour > 0:
-        result += f"{hour}时"
+        result += f"{hour} 时"
     minutes = time % 3600 // 60
     if minutes > 0:
-        result += f"{minutes}分"
+        result += f" {minutes} 分"
     return result
 
 
@@ -447,3 +447,8 @@ def download_image(url, save_dir="cover"):
 def upload_cover(url):
     cover_file = download_image(url)
     return upload_image("cover",f"{cover_file.split('/')[-1]}",cover_file)
+
+
+def get_embed(url):
+    return {"type": "embed", "embed": {"url": url}}
+
