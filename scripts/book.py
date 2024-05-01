@@ -139,16 +139,16 @@ def insert_book_to_notion(books, index, bookId):
     parent = {"database_id": notion_helper.book_database_id, "type": "database_id"}
     result = None
     if bookId in notion_books:
-        notion_helper.update_page(
+        result = notion_helper.update_page(
             page_id=notion_books.get(bookId).get("pageId"),
             properties=properties,
-            icon=utils.get_icon(book.get("图书封面")),
+            cover=utils.get_icon(cover),
         )
     else:
-        notion_helper.create_page(
+        result = notion_helper.create_book_page(
             parent=parent,
             properties=properties,
-            icon=utils.get_icon(book.get("图书封面")),
+            icon=utils.get_icon(cover),
         )
     page_id = result.get("id")
     if book.get("readDetail") and book.get("readDetail").get("data"):
@@ -228,9 +228,7 @@ if __name__ == "__main__":
                 or value.get("readingTime") == bookProgress.get(key).get("readingTime")
             )
             and (archive_dict.get(key) == value.get("category"))
-            and value.get("cover")
-            and (not value.get("cover").endswith("/0.jpg"))
-            and (not value.get("cover").endswith("parsecover"))
+            and (value.get("cover") is not None)
             and (
                 value.get("status") != "已读"
                 or (value.get("status") == "已读" and value.get("myRating"))
