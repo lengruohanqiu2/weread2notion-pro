@@ -56,7 +56,6 @@ def insert_book_to_notion(books, index, bookId):
     readInfo.update(readInfo.get("readDetail", {}))
     readInfo.update(readInfo.get("bookInfo", {}))
     book.update(readInfo)
-    book["图书封面"] = cover
     book["阅读进度"] = (
         100 if (book.get("markedStatus") == 4) else book.get("readingProgress", 0)
     ) / 100
@@ -75,6 +74,7 @@ def insert_book_to_notion(books, index, bookId):
     cover = book.get("cover").replace("/s_", "/t7_")
     if not cover and not cover.strip() and not cover.startswith("http"):
         cover = BOOK_ICON_URL
+    book["图书封面"] = cover
     if book.get("newRatingDetail") and book.get("newRatingDetail").get("myRating"):
         book["个人评级"] = rating.get(book.get("newRatingDetail").get("myRating"))
     elif status== "弃读📕":
